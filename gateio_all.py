@@ -13,6 +13,16 @@ SLEEP_TIME = 0.2
 ## setup config.py in the same folder
 ## ==================================##
 
+EXCHANGES=["GATEIO"]  # only one
+
+WANTED_CURRENCIES = ['USDT', 'BTC'] 
+
+
+# # Do not alter below easily
+GROUP_SIZE = len(EXCHANGES) * 1000
+
+URL='https://data.gateio.co/api2/1/tickers'
+## end of Config file
 
 
 #===== Setup Date and Time #======== 
