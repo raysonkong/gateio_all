@@ -93,7 +93,7 @@ def removeUnderscore(symbol):
 
 formattedSymbol = []
 for symbol in selectedSymbols:
-    formattedSymbol.append(removeUnderscore(symbol))
+    formattedSymbol.append(EXCHANGES[0] + ":" + removeUnderscore(symbol))
 
 #print(formattedSymbol)
 
