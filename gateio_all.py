@@ -138,7 +138,7 @@ grouped_pairs = group_into_n(formattedSymbol, n)
 # /Users/raysonkong/code/python/webscrapping/scripts_v2/cmc_api_to_tradingview/outputs
 def output_to_text_file(nested_grouped_pairs):
     for idx, group in enumerate(nested_grouped_pairs):
-            filename=f"{os.getcwd()}/{EXCHANGES[0]}_ALL_{generation_date}total/-1.0 {EXCHANGES[0]}_ALL p.{idx+1} ({generation_date}).txt"
+            filename=f"{os.getcwd()}/{EXCHANGES[0]}_ALL_{generation_date}total{len(formattedSymbol)}/-1.0 {EXCHANGES[0]} p.{idx+1} ({generation_date}).txt"
             os.makedirs(os.path.dirname(filename), exist_ok=True)
             with open(filename, "w") as f:
                 for pair in group:
