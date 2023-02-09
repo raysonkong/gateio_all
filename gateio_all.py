@@ -10,22 +10,9 @@ from config import *
 SLEEP_TIME = 0.2
 
 ## ==================================##
-## setup config_cmc.py in the same folder
+## setup config.py in the same folder
 ## ==================================##
 
-
-
-# EXCHANGES=["HUOBI"]  # only one
-
-# WANTED_CURRENCIES = ['USDT', 'BTC'] 
-
-
-
-# # # Do not alter below easily
-# GROUP_SIZE = len(EXCHANGES) * 1000
-
-# URL = 'https://api.huobi.pro/v1/common/symbols'
-# ## end of Config file
 
 
 #===== Setup Date and Time #======== 
@@ -48,41 +35,64 @@ current_time = time.strftime("%H:%M:%S", t)
 # ======================== ### 
 
 
+# output: btc_usdt
 response = requests.get(URL)
-#print(response.json())
+gateioInfo = response.json()
 
-coins = response.json()['data']
+symbols = []  
 
-#print(coins[0]['base-currency'])
+def getList(dict):
+    for key in dict.keys():
+        symbols.append(key)
 
-# base-currency, quote-currency ( usdt or btc)
+    return list
 
-
-#print(parsed_response2)
-
-
-# #================================================ # 
-# # Step 1 #
-# # Turn Json response to a list of symbols
-# # output: [ 'BTC', "ETH", ...] 
-# # ============================================== ### 
-
-#print(coins)
-symbols = []
-
-for coin in coins:
-    #print(coin['base-currency'])
-    for wanted in WANTED_CURRENCIES:
-        if coin['quote-currency'].lower() == wanted.lower():
-            symbols.append(EXCHANGES[0] + ":" + coin['base-currency'].upper() + coin['quote-currency'].upper())
+getList(gateioInfo)
 
 
-#print(symbols)
+# ======================== ### 
+# selected wanted pairs
+# ======================== ### 
+selectedSymbols = []
+
+for symbol in symbols:
+    for currency in WANTED_CURRENCIES:
+        currencyLen = len(currency)
+        if symbol[-currencyLen:].lower() == currency.lower():
+            selectedSymbols.append(symbol.upper())
+
+#print(selectedSymbols)
+
+
+# ======================== ### 
+# Format the selectedSymbols
+# ======================== ###
+
+# input: ELF_USDT 
+# output: GATEIO:ELFUSDT
+
+## ====Helper: remove '_' ====== #
+def removeUnderscore(symbol):
+    newsymbol = ''
+    for char in symbol:
+        if char != '_':
+            newsymbol+=char
+    return newsymbol
+
+#print(removeUnderscore('BTC_USDT'))
+
+formattedSymbol = []
+for symbol in selectedSymbols:
+    formattedSymbol.append(removeUnderscore(symbol))
+
+#print(formattedSymbol)
+
+
+
 
 
 #================================================
-# Step 4 #
-# Group output from step 3
+# Group output from Last Step
 # to a list containing lists of n 
 # =============================================== ### 
 
@@ -95,7 +105,7 @@ def group_into_n(data_list, n):
 #test = [1,2,3,4,5,6,7,8]
 #print(group_into_n(test, n))
 
-grouped_pairs = group_into_n(symbols, n)
+grouped_pairs = group_into_n(formattedSymbol, n)
 
 #print(grouped_pairs)
 
@@ -118,7 +128,7 @@ grouped_pairs = group_into_n(symbols, n)
 # /Users/raysonkong/code/python/webscrapping/scripts_v2/cmc_api_to_tradingview/outputs
 def output_to_text_file(nested_grouped_pairs):
     for idx, group in enumerate(nested_grouped_pairs):
-            filename=f"{os.getcwd()}/{EXCHANGES[0]}_ALL_{generation_date}total/-0.4 {EXCHANGES[0]}_ALL p.{idx+1} ({generation_date}).txt"
+            filename=f"{os.getcwd()}/{EXCHANGES[0]}_ALL_{generation_date}total/-1.0 {EXCHANGES[0]}_ALL p.{idx+1} ({generation_date}).txt"
             os.makedirs(os.path.dirname(filename), exist_ok=True)
             with open(filename, "w") as f:
                 for pair in group:
