@@ -9,20 +9,20 @@ from config import *
 
 SLEEP_TIME = 0.2
 
-## ==================================##
-## setup config.py in the same folder
-## ==================================##
+# ## ==================================##
+# ## setup config.py in the same folder
+# ## ==================================##
 
-EXCHANGES=["GATEIO"]  # only one
+# EXCHANGES=["GATEIO"]  # only one
 
-WANTED_CURRENCIES = ['USDT', 'BTC'] 
+# WANTED_CURRENCIES = ['USDT'] # prefer just one 
 
 
-# # Do not alter below easily
-GROUP_SIZE = len(EXCHANGES) * 1000
+# # # Do not alter below easily
+# GROUP_SIZE = len(EXCHANGES) * 1000
 
-URL='https://data.gateio.co/api2/1/tickers'
-## end of Config file
+# URL='https://data.gateio.co/api2/1/tickers'
+# ## end of Config file
 
 
 #===== Setup Date and Time #======== 
@@ -148,11 +148,10 @@ def output_to_text_file(nested_grouped_pairs):
 
 
 def run_srapper():
-    os.system('clear')
     output_to_text_file(grouped_pairs)
 
 
-    print("== CMC Scrapping Completed ==")
+    print("== GateIO All Tickers Retrieved ==")
     print('\n')
     #print("======================================================")
 if __name__ =='__main__':
